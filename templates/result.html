@@ -1,0 +1,31 @@
+<!-- results.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Diagnosis Result</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Diagnosis Result</h1>
+
+        {% if recommended_actions %}
+            <div class="result-container">
+                <h2>Recommended Actions:</h2>
+                <ul>
+                    {% for action in recommended_actions %}
+                        <li><strong>{{ action }}</strong></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <p>No rules triggered. Please check your inputs and try again.</p>
+        {% endif %}
+
+        <a href="{{ url_for('index') }}">Back to Diagnosis</a>
+    </div>
+</body>
+</html>
