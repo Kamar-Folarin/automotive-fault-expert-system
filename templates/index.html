@@ -1,5 +1,4 @@
-<!-- index.html -->
-
+<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,89 +8,30 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
-    <title>Expert System for Automotive Fault Diagnosis</title>
-    <script>
-      function updateOppositeValue(sourceId, targetId) {
-        var sourceElement = document.getElementById(sourceId);
-        var targetElement = document.getElementById(targetId);
-
-        // Set the target value to the opposite of the source value
-        targetElement.value = sourceElement.value === "true" ? "false" : "true";
-      }
-    </script>
+    <title>Automotive Diagnostic Form</title>
   </head>
   <body>
-    <div class="container">
-      <h1>Expert System for Automotive Fault Diagnosis</h1>
-      <form action="{{ url_for('diagnose') }}" method="post">
-        <div class="form-group">
-          <label for="ignition">Ignition:</label>
-          <select name="ignition" id="ignition">
-            <option value="true">On</option>
-            <option value="false">Off</option>
-          </select>
-        </div>
+    <h1>Initial User Information</h1>
+    <form action="/" method="POST">
+      <label for="name">Name:</label>
+      <input type="text" name="name" required />
 
-        <!-- Other input elements... -->
+      <label for="car_model">Car Model:</label>
+      <input type="text" name="car_model" required />
 
-        <div class="form-group">
-          <label for="engineCrank">Engine Crank:</label>
-          <select
-            name="engineCrank"
-            id="engineCrank"
-            onchange="updateOppositeValue('engineCrank', 'engineNotCrank')"
-          >
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-        </div>
+      <label for="make">Make:</label>
+      <input type="text" name="make" required />
 
-        <!-- Hidden input for Engine Not Crank -->
-        <input type="hidden" name="engineNotCrank" id="engineNotCrank" />
+      <label for="year">Year:</label>
+      <input type="text" name="year" required />
 
-        <!-- Other input elements... -->
+      <label for="mileage">Mileage:</label>
+      <input type="text" name="mileage" required />
 
-        <div class="form-group">
-          <label for="enoughFuel">Enough Fuel:</label>
-          <select name="enoughFuel" id="enoughFuel">
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-        </div>
+      <label for="date_of_diagnosis">Date of Diagnosis:</label>
+      <input type="date" name="date_of_diagnosis" required />
 
-        <!-- Other input elements... -->
-
-        <div class="form-group">
-          <label for="temperature">Temperature:</label>
-          <input type="number" name="temperature" id="temperature" />
-        </div>
-
-        <!-- Other input elements... -->
-
-        <div class="form-group">
-          <label for="liquidLeakage">Liquid Leakage:</label>
-          <select name="liquidLeakage" id="liquidLeakage">
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-        </div>
-
-        <!-- Other input elements... -->
-
-        <div class="form-group">
-          <label for="acBlowingHotAir">AC Blowing Hot Air:</label>
-          <select name="acBlowingHotAir" id="acBlowingHotAir">
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-        </div>
-
-        <!-- Other input elements... -->
-
-        <div class="form-group">
-          <button type="submit">Diagnose</button>
-        </div>
-      </form>
-    </div>
+      <input type="submit" value="Start Diagnosis" />
+    </form>
   </body>
 </html>

@@ -1,50 +1,92 @@
-# app.py
-from flask import Flask, render_template, request
-from rule_description import RULE_DESCRIPTIONS
-from rules import AutomotiveExpertSystem
+import ast
+import json
+import os
+from urllib.parse import parse_qs, urlencode
+from flask import Flask, render_template, request, redirect, session, url_for
+
+from diagnosis_rules import diagnose
 
 app = Flask(__name__)
 
-@app.route('/start')
+app.secret_key = os.getenv('SECRET_KEY')
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        # Get user information from the initial form
+        user_info = {
+            'name': request.form.get('name'),
+            'car_model': request.form.get('car_model'),
+            'make': request.form.get('make'),
+            'year': request.form.get('year'),
+            'mileage': request.form.get('mileage'),
+            'date_of_diagnosis': request.form.get('date_of_diagnosis')
+        }
+
+        # Remove None values from the user_info dictionary
+        user_info = {key: value for key, value in user_info.items() if value is not None}
+        print('userInfoSent', user_info)
+        # Redirect to the /diagnosis route with the user_info included in the URL path
+        return redirect(url_for('diagnosis', **user_info))
+
     return render_template('index.html')
 
-@app.route('/diagnose', methods=['POST'])
-def diagnose():
-    # Get form data
-    ignition = request.form.get('ignition') == 'true'
-    engine_crank = request.form.get('engineCrank') == 'true'
-    enough_fuel = request.form.get('enoughFuel') == 'true'
-    ignition_off = request.form.get('ignitionOff') == 'true'
-    engine_not_crank = request.form.get('engineNotCrank') == 'true'
-    not_enough_fuel = request.form.get('notEnoughFuel') == 'true'
-    temperature = request.form.get('temperature') == 'true'
-    liquid_leakage = request.form.get('liquidLeakage') == 'true' 
-    ac_blowing_hot_air = request.form.get('acBlowingHotAir') == 'true'
-    # additional_input = request.form.get('additionalInput') == 'true'
+@app.route('/diagnosis', methods=['GET', 'POST'])
+def diagnosis():
+    if request.method == 'POST':
+        # Extract symptoms directly from the form data
+        symptoms = {key: request.form.getlist(key) for key in request.form}
 
-    # Perform diagnosis using the expert system
-    expert_system = AutomotiveExpertSystem()
-    result_rules = expert_system.query_fault(**{
-        'ignition': ignition,
-        'engine_crank': engine_crank,
-        'enough_fuel': enough_fuel,
-        'ignition_off': ignition_off,
-        'engine_not_crank': engine_not_crank,
-        'not_enough_fuel': not_enough_fuel,
-        'temperature': temperature,
-        'liquid_leakage':liquid_leakage,
-        'ac_blowing_hot_air': ac_blowing_hot_air
-        # 'additional_input': additional_input,
-    })
-    print ('enginenotcrank:', engine_not_crank)
-    print ('resultRules', result_rules)
+        # Get user information from the session
+        user_info = session.get('user_info', {})
+        print('user_info_in diagnosis route:', user_info)
+        print('requestBoody', request.args.get('name'))
+        # Combine user information and diagnosis symptoms
+        data = {
+            'user_info': user_info,
+            'symptoms': symptoms
+        }
 
-    # Convert rule numbers to user-friendly descriptions
-    recommended_actions = [RULE_DESCRIPTIONS.get(rule, rule) for rule in result_rules.values() if not rule.startswith('rule')]
+        # Redirect to the /explanation route with the encoded data
+        return redirect(url_for('explanation', data=json.dumps(data)))
 
+    # Handle GET request parameters
+    user_info = {
+        'name': request.args.get('name'),
+        'car_model': request.args.get('car_model'),
+        'make': request.args.get('make'),
+        'year': request.args.get('year'),
+        'mileage': request.args.get('mileage'),
+        'date_of_diagnosis': request.args.get('date_of_diagnosis')
+    }
 
-    return render_template('result.html', recommended_actions=recommended_actions)
+    # Store user information in the session
+    session['user_info'] = user_info
+    print('user_info_in diagnosis get route:', user_info)
 
-if __name__ == "__main__":
+    return render_template('diagnosis.html', user_info=user_info)
+
+@app.route('/explanation', methods=['GET'])
+def explanation():
+    # Retrieve user information and symptoms from the URL query string
+    user_info = {key: request.args.get(key) for key in ['name', 'car_model', 'make', 'year', 'mileage', 'date_of_diagnosis']}
+    symptoms_data_str = request.args.get('data', '{}')
+
+    # Parse JSON string to a Python dictionary
+    symptoms_data_dict = json.loads(symptoms_data_str)
+
+    # Extract user_info and symptoms from the dictionary
+    user_info.update(symptoms_data_dict.get('user_info', {}))
+    symptoms = symptoms_data_dict.get('symptoms', {})
+
+    # Call the diagnose function with user_info and symptoms
+    diagnosis_result = diagnose(user_info=user_info, symptoms=symptoms)
+
+    # Extract symptoms_diagnosis from the diagnosis result
+    symptoms_diagnosis = diagnosis_result.get('symptoms_diagnosis', [])
+
+    # Pass the diagnosis result and symptoms_diagnosis to the template
+    return render_template('explanation.html', user_info=user_info, diagnosis_result=diagnosis_result, symptoms_diagnosis=symptoms_diagnosis)
+
+if __name__ == '__main__':
     app.run(debug=True)

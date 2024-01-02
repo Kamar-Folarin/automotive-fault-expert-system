@@ -1,0 +1,61 @@
+<!-- templates/explanation.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <title>Diagnostic Results</title>
+  </head>
+  <body>
+    <h1>Diagnostic Results</h1>
+
+    <section>
+      <h2>User Information</h2>
+      <ul>
+        <li>
+          <strong>Name:</strong> {{ diagnosis_result['user_info']['name'] }}
+        </li>
+        <li>
+          <strong>Car Model:</strong> {{
+          diagnosis_result['user_info']['car_model'] }}
+        </li>
+        <li>
+          <strong>Make:</strong> {{ diagnosis_result['user_info']['make'] }}
+        </li>
+        <li>
+          <strong>Year:</strong> {{ diagnosis_result['user_info']['year'] }}
+        </li>
+        <li>
+          <strong>Mileage:</strong> {{ diagnosis_result['user_info']['mileage']
+          }}
+        </li>
+        <li>
+          <strong>Date of Diagnosis:</strong> {{
+          diagnosis_result['user_info']['date_of_diagnosis'] }}
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Diagnosis</h2>
+      <ul>
+        {% for item in symptoms_diagnosis %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <section>
+      <h2>Probable Solutions</h2>
+      <ul>
+        {% for item in diagnosis_result['diagnosis'] %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </body>
+</html>

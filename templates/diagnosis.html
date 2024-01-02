@@ -1,0 +1,248 @@
+<!-- templates/diagnose.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <title>Automotive Diagnostic Form</title>
+  </head>
+  <body>
+    <h1>Automotive Diagnostic Form</h1>
+    <form action="/diagnosis" method="POST">
+      <fieldset>
+        <legend>Starting Problems</legend>
+        <label
+          ><input
+            type="checkbox"
+            name="starting_problems"
+            value="will_not_crank"
+          />Will Not Crank</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="starting_problems"
+            value="cranks_but_will_not_start"
+          />Cranks but Will Not Start</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="starting_problems"
+            value="starts_then_dies"
+          />Starts then Dies</label
+        >
+      </fieldset>
+
+      <fieldset>
+        <legend>Engine Behavior</legend>
+        <label
+          ><input
+            type="checkbox"
+            name="engine_behavior"
+            value="engine_misfires"
+          />Engine Misfires</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="engine_behavior"
+            value="engine_knocks_under_load"
+          />Engine Knocks Under Load</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="engine_behavior"
+            value="overheating_engine"
+          />Overheating Engine</label
+        >
+      </fieldset>
+
+      <fieldset>
+        <legend>Transmission Problems</legend>
+        <label
+          ><input
+            type="checkbox"
+            name="transmission_problems"
+            value="slipping_transmission"
+          />Slipping Transmission</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="transmission_problems"
+            value="hard_shifts"
+          />Hard Shifts</label
+        >
+      </fieldset>
+
+      <fieldset>
+        <legend>Idling Conditions</legend>
+        <label
+          ><input
+            type="checkbox"
+            name="idling_conditions"
+            value="rough_idle"
+          />Rough Idle</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="idling_conditions"
+            value="fluctuating_idle"
+          />Fluctuating Idle</label
+        >
+      </fieldset>
+
+      <fieldset>
+        <legend>Running Conditions</legend>
+        <label
+          ><input
+            type="checkbox"
+            name="running_conditions"
+            value="lacks_power"
+          />Lacks Power</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="running_conditions"
+            value="engine_hesitation"
+          />Engine Hesitation</label
+        >
+      </fieldset>
+
+      <fieldset>
+        <legend>Electrical System</legend>
+        <label
+          ><input
+            type="checkbox"
+            name="electrical_system"
+            value="battery_drains_quickly"
+          />Battery Drains Quickly</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="electrical_system"
+            value="headlights_dim"
+          />Headlights Dim</label
+        >
+      </fieldset>
+
+      <fieldset>
+        <legend>Braking System</legend>
+        <label
+          ><input
+            type="checkbox"
+            name="braking_system"
+            value="squealing_brakes"
+          />Squealing Brakes</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="braking_system"
+            value="brake_pedal_soft"
+          />Brake Pedal Soft</label
+        >
+      </fieldset>
+
+      <fieldset>
+        <legend>Steering and Suspension</legend>
+        <label
+          ><input
+            type="checkbox"
+            name="steering_suspension"
+            value="car_pulls_to_one_side"
+          />Car Pulls to One Side</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="steering_suspension"
+            value="steering_wheel_vibration"
+          />Steering Wheel Vibration</label
+        >
+      </fieldset>
+
+      <fieldset>
+        <legend>Exhaust System</legend>
+        <label
+          ><input
+            type="checkbox"
+            name="exhaust_system"
+            value="exhaust_smoke"
+          />Exhaust Smoke</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="exhaust_system"
+            value="loud_exhaust_noise"
+          />Loud Exhaust Noise</label
+        >
+      </fieldset>
+
+      <fieldset>
+        <legend>Fuel System</legend>
+        <label
+          ><input
+            type="checkbox"
+            name="fuel_system"
+            value="poor_fuel_economy"
+          />Poor Fuel Economy</label
+        >
+        <label
+          ><input type="checkbox" name="fuel_system" value="fuel_smell" />Fuel
+          Smell</label
+        >
+      </fieldset>
+
+      <fieldset>
+        <legend>Cooling System</legend>
+        <label
+          ><input
+            type="checkbox"
+            name="cooling_system"
+            value="coolant_leak"
+          />Coolant Leak</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="cooling_system"
+            value="high_temperature"
+          />High Temperature</label
+        >
+      </fieldset>
+
+      <fieldset>
+        <legend>Air Conditioning</legend>
+        <label
+          ><input
+            type="checkbox"
+            name="air_conditioning"
+            value="ac_not_cooling"
+          />AC Not Cooling</label
+        >
+        <label
+          ><input
+            type="checkbox"
+            name="air_conditioning"
+            value="ac_blowing_hot_air"
+          />AC Blowing Hot Air</label
+        >
+      </fieldset>
+
+      <!-- Additional fields for other symptom categories (Idling Conditions, Running Conditions, etc.) -->
+
+      <input type="submit" value="Diagnose" />
+    </form>
+  </body>
+</html>
