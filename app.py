@@ -1,6 +1,7 @@
 import ast
 import json
 import os
+import subprocess
 from urllib.parse import parse_qs, urlencode
 from flask import Flask, render_template, request, redirect, session, url_for
 
@@ -87,6 +88,12 @@ def explanation():
 
     # Pass the diagnosis result and symptoms_diagnosis to the template
     return render_template('explanation.html', user_info=user_info, diagnosis_result=diagnosis_result, symptoms_diagnosis=symptoms_diagnosis)
+
+@app.route('/streamlit', methods=['GET'])
+def streamlit_integration():
+    # Run Streamlit app as a subprocess
+    subprocess.Popen(['streamlit', 'run', 'streamlit_app.py'])
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
