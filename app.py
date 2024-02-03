@@ -40,16 +40,21 @@ def diagnosis():
 
         # Get user information from the session
         user_info = session.get('user_info', {})
-        print('user_info_in diagnosis route:', user_info)
-        print('requestBoody', request.args.get('name'))
+
         # Combine user information and diagnosis symptoms
         data = {
             'user_info': user_info,
             'symptoms': symptoms
         }
 
-        # Redirect to the /explanation route with the encoded data
-        return redirect(url_for('explanation', data=json.dumps(data)))
+        # Call the diagnose function with user_info and symptoms
+        diagnosis_result = diagnose(user_info=user_info, symptoms=symptoms)
+
+        # Get additional information from the GPT integration
+        gpt_response = diagnosis_result.get('gpt_response', "")
+
+        # Redirect to the /explanation route with the encoded data and GPT response
+        return redirect(url_for('explanation', data=json.dumps(data), gpt_response=gpt_response))
 
     # Handle GET request parameters
     user_info = {
@@ -63,7 +68,6 @@ def diagnosis():
 
     # Store user information in the session
     session['user_info'] = user_info
-    print('user_info_in diagnosis get route:', user_info)
 
     return render_template('diagnosis.html', user_info=user_info)
 
@@ -72,6 +76,7 @@ def explanation():
     # Retrieve user information and symptoms from the URL query string
     user_info = {key: request.args.get(key) for key in ['name', 'car_model', 'make', 'year', 'mileage', 'date_of_diagnosis']}
     symptoms_data_str = request.args.get('data', '{}')
+    gpt_response = request.args.get('gpt_response', "")
 
     # Parse JSON string to a Python dictionary
     symptoms_data_dict = json.loads(symptoms_data_str)
@@ -86,8 +91,9 @@ def explanation():
     # Extract symptoms_diagnosis from the diagnosis result
     symptoms_diagnosis = diagnosis_result.get('symptoms_diagnosis', [])
 
-    # Pass the diagnosis result and symptoms_diagnosis to the template
-    return render_template('explanation.html', user_info=user_info, diagnosis_result=diagnosis_result, symptoms_diagnosis=symptoms_diagnosis)
+    # Pass the diagnosis result, symptoms_diagnosis, and GPT response to the template
+    return render_template('explanation.html', user_info=user_info, diagnosis_result=diagnosis_result, symptoms_diagnosis=symptoms_diagnosis, gpt_response=gpt_response)
+
 
 @app.route('/streamlit', methods=['GET'])
 def streamlit_integration():

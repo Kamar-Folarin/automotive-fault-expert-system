@@ -1,8 +1,10 @@
-# diagnosis_rules.py
-
 import json
+import os
+from dotenv import load_dotenv
+import openai
 
-
+load_dotenv()
+gpt_api_key = os.getenv('GPT_API_KEY')
 class DiagnosisEngine:
     def __init__(self, user_info, symptoms):
         print('dataInRules', user_info, symptoms)
@@ -141,7 +143,29 @@ class DiagnosisEngine:
 
         if not self.diagnosis:
             self.diagnosis.append("No issues detected based on the symptoms provided.")
-        return {'user_info': self.user_info, 'diagnosis': self.diagnosis, 'symptoms_diagnosis': self.symptoms_diagnosis}
+        # Get additional information from GPT API
+        gpt_response = self.query_gpt_api(self.symptoms_diagnosis)
+
+        return {'user_info': self.user_info, 'diagnosis': self.diagnosis, 'symptoms_diagnosis': self.symptoms_diagnosis, 'gpt_response': gpt_response}
+
+    def query_gpt_api(self, diagnosis):
+        # Concatenate diagnosis information into a single string
+        diagnosis_text = " ".join(diagnosis)
+
+        # Call GPT API to get additional information
+        try:
+            openai.api_key = gpt_api_key  
+            response = openai.Completion.create(
+                engine="davinci-002",  
+                prompt=f"Explain the possible causes and solutions for the following automitive fault diagnosis:\n\n{diagnosis_text}",
+                max_tokens=200  
+            )
+            gpt_response = response['choices'][0]['text'].strip()
+            return gpt_response
+        except Exception as e:
+            print(f"Error querying GPT API: {e}")
+            return {"error": "Error querying GPT API"}
+
 
 def diagnose(user_info, symptoms):
     # If symptoms is already a dictionary, use it directly
@@ -157,3 +181,5 @@ def diagnose(user_info, symptoms):
 
     engine = DiagnosisEngine(user_info=user_info, symptoms=symptoms_dict)
     return engine.run_diagnosis()
+
+

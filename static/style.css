@@ -1,13 +1,16 @@
 body {
-  background: linear-gradient(to right, #001f3f, #004080, #002b36);
-  font-family: "Arial", sans-serif;
+  background-image: url("/static/car_image.jpg");
+  background-size: cover;
+  background-position: center;
   margin: 0;
   padding: 0;
+  font-family: Arial, sans-serif;
+  color: #f5f5dc;
 }
 
 h1,
 h2 {
-  color: #ff9900; /* Orange accent */
+  color: #d8f38a;
 }
 
 form,
@@ -15,7 +18,7 @@ form,
 .diagnosis-container {
   max-width: 800px;
   margin: 20px auto;
-  background-color: #001f3f; /* Navy blue */
+  background-color: #008080;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -28,16 +31,16 @@ fieldset {
   border-radius: 5px;
   background: linear-gradient(
     to right,
-    #004080,
-    #001f3f
-  ); /* Darker blue gradient */
+    #006666,
+    #fa8072
+  );
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 label {
   display: block;
   margin: 10px 0;
-  color: #ff9900; /* Orange accent */
+  color: #f5f5dc;
 }
 
 input[type="checkbox"],
@@ -46,11 +49,7 @@ input[type="submit"] {
 }
 
 .diagnosis-item {
-  background: linear-gradient(
-    to right,
-    #003366,
-    #002b36
-  ); /* Darker greenish-blue gradient */
+  background: linear-gradient(to right, #003366, #002b36);
   padding: 20px;
   margin-bottom: 20px;
   border-radius: 8px;
@@ -58,49 +57,52 @@ input[type="submit"] {
 }
 
 .diagnosis-item h2 {
-  color: #ff9900; /* Orange accent */
-  border-bottom: 1px solid #ff9900; /* Orange accent */
+  color: #f5f5dc;
+  border-bottom: 1px solid #f5f5dc;
   padding-bottom: 10px;
   margin-bottom: 10px;
 }
 
+a:hover {
+  color: #f5f5dc;
+}
+
 a {
-  display: inline-block;
-  margin-top: 20px;
-  color: #004080; /* Navy blue */
+  color: #e39d05;
   text-decoration: none;
 }
 
-a:hover {
-  color: #ff9900; /* Orange accent */
+a:visited {
+  color: #ee39ee;
 }
 
-/* Orange accent for box hover */
+a:hover {
+  color: #ff4500;
+}
+
 .form-container:hover,
 .diagnosis-container:hover,
 .diagnosis-item:hover {
-  border: 2px solid #ff9900;
+  border: 2px solid #f5f5dc;
 }
 
-/* Orange accent for button click */
 input[type="submit"]:active {
-  background-color: #ff9900;
-  color: #001f3f; /* Navy blue */
+  background-color: #f5f5dc;
+  color: #001f3f;
 }
 
-/* Add these styles to your existing CSS */
 
 section {
   max-width: 800px;
   margin: 20px auto;
-  background-color: #001f3f; /* Navy blue */
+  background: linear-gradient(to right, #006666, #fa8072);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 section h2 {
-  color: #ff9900; /* Orange accent */
+  color: #f5f5dc;
 }
 
 section ul {
@@ -110,10 +112,9 @@ section ul {
 
 section ul li {
   margin-bottom: 10px;
-  color: #ecf0f1; /* Text color */
+  color: #ecf0f1;
 }
 
-/* Orange accent for box hover */
 section:hover {
-  border: 2px solid #ff9900;
+  border: 2px solid #f5f5dc;
 }
